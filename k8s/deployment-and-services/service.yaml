@@ -1,0 +1,12 @@
+aviVersion: v1
+kind: Service
+metadate: 
+ name:flask-app-service
+ spec:
+  type: LoadBalancer
+  ports:
+    - port: 5053
+      targetPort: 5053
+      protocol: TCP
+  selector:
+    app: flask-app
