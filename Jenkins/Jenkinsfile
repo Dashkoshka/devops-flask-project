@@ -12,11 +12,8 @@ pipeline {
             steps {
                 sh 'pwd'  // print to console current directory location
                 sh 'ls -la'  // print to console current directory file list
-                dir('flask-app') {
-                    sh 'ls -la'  // verify Dockerfile exists
-                    script {
+                script {
                         docker.build("${DOCKER_IMAGE}", "-f Dockerfile .")
-                    }
                 }
             }
         }
