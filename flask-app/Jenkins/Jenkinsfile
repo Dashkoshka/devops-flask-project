@@ -10,16 +10,22 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
+                echo '-- Build Docker Image'
                 sh 'pwd'  // print to console current directory location
                 sh 'ls -la'  // print to console current directory file list
-                script {
-                        docker.build("${DOCKER_IMAGE}", "-f flask-app/Dockerfile .")
+                dir('flask-app') {
+                    echo 'enter flask-app folder'
+                    sh 'ls -la' 
+                    script {
+                            docker.build("${DOCKER_IMAGE}", "-f Dockerfile .")
+                    }
                 }
             }
         }
      
         stage('Push to ECR') {                         
             steps {
+                echo '-- Push to ECR'
                 script {
                     sh """
                         aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
@@ -32,13 +38,20 @@ pipeline {
 
         stage('Deploy to EKS') {                     
             steps {
-                script {
-                    sh """
-                        aws eks update-kubeconfig --name my-eks-cluster --region ${AWS_DEFAULT_REGION}
-                        kubectl apply -f k8s/configmap-and-secret/
-                        sed 's|\${DOCKER_IMAGE}|${ECR_REPO}/${DOCKER_IMAGE}|g' k8s/deployment-and-services/deployment.yaml | kubectl apply -f -
-                        kubectl apply -f k8s/deployment-and-services/service.yaml
-                    """                                
+                echo '-- Deploy to EKS'
+                sh 'pwd'  // print to console current directory location
+                sh 'ls -la'  // print to console current directory file list
+                dir('flask-app') {
+                    echo 'enter flask-app folder'
+                    sh 'ls -la' 
+                    script {
+                        sh """
+                            aws eks update-kubeconfig --name my-eks-cluster --region ${AWS_DEFAULT_REGION}
+                            kubectl apply -f k8s/configmap-and-secret/
+                            sed 's|\${DOCKER_IMAGE}|${ECR_REPO}/${DOCKER_IMAGE}|g' k8s/deployment-and-services/deployment.yaml | kubectl apply -f -
+                            kubectl apply -f k8s/deployment-and-services/service.yaml
+                        """                                
+                    }
                 }
             }
         }
