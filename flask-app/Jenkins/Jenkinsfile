@@ -13,7 +13,7 @@ pipeline {
                 sh 'pwd'  // print to console current directory location
                 sh 'ls -la'  // print to console current directory file list
                 script {
-                        docker.build("${DOCKER_IMAGE}", "-f Dockerfile .")
+                        docker.build("${DOCKER_IMAGE}", "-f flask-app/Dockerfile .")
                 }
             }
         }

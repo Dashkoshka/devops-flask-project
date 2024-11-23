@@ -1,2 +1,10 @@
 .env
 __pycache__/
+
+//devops folders and files not saved in git repo
+// -- folders
+.terraform
+keys
+// -- files
+*.backup
+
