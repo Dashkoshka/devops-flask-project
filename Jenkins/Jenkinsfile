@@ -10,8 +10,13 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKER_IMAGE}", "-f Dockerfile .")
+                sh 'pwd'  // print to console current directory location
+                sh 'ls -la'  // print to console current directory file list
+                dir('flask-app') {
+                    sh 'ls -la'  // verify Dockerfile exists
+                    script {
+                        docker.build("${DOCKER_IMAGE}", "-f Dockerfile .")
+                    }
                 }
             }
         }
