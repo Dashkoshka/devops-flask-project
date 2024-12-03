@@ -1,0 +1,8 @@
+--- To run the scripts - 
++ Open git bush terminal (not the powershell)
++ cd /cloud-infra/scripts
++ ./name-of-the-script-need-to-run (available scripts - shuthdown-all.sh | stratup-all.sh )
+
++ If you run the start all script - 
+- To activate jenkins service go to aws console jenkins ec2 get the ip 4 address and got to address:8080, 
+  to login get the password from the ec2 terminal by using the next command "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"  
