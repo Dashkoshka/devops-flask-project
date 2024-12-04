@@ -1,3 +1,9 @@
+--- pre reqiuerment ---
+- install awss cli
+- install terraform
+- phyton
+- devops-flask-project\cloud-infra\jenkins-terraform\keys\devops-key.pem
+
 --- To run the scripts - 
 + Open git bush terminal (not the powershell)
 + cd /cloud-infra/scripts

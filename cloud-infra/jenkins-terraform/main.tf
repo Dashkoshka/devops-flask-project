@@ -105,6 +105,10 @@ resource "aws_iam_role" "jenkins_role" {
       }
     ]
   })
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Attach policies to Jenkins role
@@ -116,6 +120,10 @@ resource "aws_iam_role_policy_attachment" "jenkins_eks_policy" {
 resource "aws_iam_instance_profile" "jenkins_profile" {
   name = "jenkins-profile"
   role = aws_iam_role.jenkins_role.name
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # EC2 Instance for Jenkins
