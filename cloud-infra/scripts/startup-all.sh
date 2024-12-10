@@ -5,7 +5,7 @@ echo "Starting all AWS resources..."
 # 1. Setup jenkins env (if needed)
 echo "Setting up Jenkins infrastructure..."
 cd ../jenkins-terraform
-mkdir -p scripts
+
 terraform import aws_iam_role.jenkins_role jenkins-role
 terraform import aws_iam_instance_profile.jenkins_profile jenkins-profile
 
