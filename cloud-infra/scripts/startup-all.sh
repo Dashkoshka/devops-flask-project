@@ -26,6 +26,7 @@ sleep 30
 # 3. Setup EKS env (if needed)
 echo "Setting up EKS infrastructure..."
 cd ./eks-terraform
+terraform init
 terraform apply -auto-approve
 cd ..
 
