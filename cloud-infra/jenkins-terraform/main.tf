@@ -155,6 +155,23 @@ resource "aws_instance" "jenkins" {
               apt-get update
               apt-get install -y jenkins
 
+              # Install Docker
+              apt-get remove -y docker docker-engine docker.io containerd runc || true
+              apt-get update
+              apt-get install -y \
+                apt-transport-https \
+                ca-certificates \
+                curl \
+                software-properties-common
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+              add-apt-repository \
+                "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+              apt-get update
+              apt-get install -y docker-ce docker-ce-cli containerd.io
+              sudo usermod -aG docker jenkins
+              sudo systemctl restart docker
+              sudo systemctl restart jenkins
+
               # Install AWS CLI
               apt-get install -y unzip
               curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -163,7 +180,8 @@ resource "aws_instance" "jenkins" {
 
               # Install kubectl
               curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-              install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+              chmod +x kubectl
+              mv kubectl /usr/local/bin/
 
               # Install eksctl
               curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
