@@ -122,6 +122,43 @@ resource "aws_iam_role_policy_attachment" "jenkins_ecr_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
 }
 
+# Custom policy for Jenkins EKS access
+resource "aws_iam_policy" "jenkins_eks_access" {
+  name        = "jenkins-eks-access"
+  description = "Policy allowing Jenkins to interact with EKS"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:ListClusters",
+          "eks:AccessKubernetesApi",
+          "eks:ListNodegroups",
+          "eks:ListUpdates",
+          "eks:ListFargateProfiles"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRole"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach the new policy to Jenkins role
+resource "aws_iam_role_policy_attachment" "jenkins_eks_access" {
+  policy_arn = aws_iam_policy.jenkins_eks_access.arn
+  role       = aws_iam_role.jenkins_role.name
+}
+
 
 resource "aws_iam_instance_profile" "jenkins_profile" {
   name = "jenkins-profile"
@@ -207,4 +244,9 @@ output "jenkins_public_ip" {
 output "jenkins_initial_password_cmd" {
   value = "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
   description = "Command to retrieve the initial Jenkins admin password (run this on the EC2 instance)"
+}
+
+output "jenkins_role_arn" {
+  description = "ARN of the Jenkins IAM role"
+  value       = aws_iam_role.jenkins_role.arn
 }
