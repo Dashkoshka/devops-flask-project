@@ -21,7 +21,8 @@ JENKINS_PASS_LOCATION=$(terraform output -raw jenkins_initial_password_cmd)
 terraform apply -target=null_resource.jenkins_config -auto-approve
 cd ..
 
-sleep 30
+echo "Waiting for Jenkins to be ready..."
+sleep 10
 
 # 3. Setup EKS env (if needed)
 echo "Setting up EKS infrastructure..."
@@ -29,6 +30,9 @@ cd ./eks-terraform
 terraform init
 terraform apply -auto-approve
 cd ..
+
+echo "Waiting for EKS cluster to be fully operational..."
+sleep 30
 
 echo "Startup complete. Please wait a few minutes for all services to be fully operational."
 
