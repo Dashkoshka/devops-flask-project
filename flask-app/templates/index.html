@@ -1,0 +1,67 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps Pokemon Todo List</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img
+          src="{{ url_for('static', filename='images/pikachu.png') }}"
+          alt="Pikachu"
+          class="pokemon-logo"
+        />
+        <h1>DevOps Pokemon Todo List</h1>
+      </header>
+
+      <div class="add-todo">
+        <input type="text" id="newTodo" placeholder="Add a new task..." />
+        <button
+          onclick="addTodo()"
+          class="add-btn"
+          data-tooltip="Catch a new task!"
+        >
+          <img
+            src="{{ url_for('static', filename='images/pokeball.png') }}"
+            alt="Add"
+            class="pokeball"
+          />
+        </button>
+      </div>
+
+      <div class="todos-container">
+        <div id="todoList" class="todo-list"></div>
+      </div>
+
+      <div class="pokemon-footer">
+        <img
+          src="{{ url_for('static', filename='images/squirtle.png') }}"
+          alt="Squirtle"
+          class="footer-pokemon"
+        />
+        <img
+          src="{{ url_for('static', filename='images/bulbasaur.png') }}"
+          alt="Bulbasaur"
+          class="footer-pokemon"
+        />
+        <img
+          src="{{ url_for('static', filename='images/charmander.png') }}"
+          alt="Charmander"
+          class="footer-pokemon"
+        />
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
