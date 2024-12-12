@@ -39,16 +39,16 @@ pipeline {
         stage('Deploy to EKS') {                     
             steps {
                 echo '-- Deploy to EKS'
-                sh 'pwd'  // print to console current directory location
-                sh 'ls -la'  // print to console current directory file list
+                sh 'pwd'
+                sh 'ls -la'
                 dir('flask-app') {
                     echo 'enter flask-app folder'
                     sh 'ls -la' 
-                    script {    
+                    script {
                         sh """
                             aws eks update-kubeconfig --name my-eks-cluster --region ${AWS_DEFAULT_REGION}
                             kubectl apply -f k8s/configmap-and-secret/
-                            sed 's|\${DOCKER_IMAGE}|${ECR_REPO}/${DOCKER_IMAGE}|g' k8s/deployment-and-services/deployment.yaml | kubectl apply -f -
+                            sed 's/\\\${DOCKER_IMAGE}/${ECR_REPO}/${DOCKER_IMAGE}/g' k8s/deployment-and-services/deployment.yaml | kubectl apply -f -
                             kubectl apply -f k8s/deployment-and-services/service.yaml
                             
                             # Wait for LoadBalancer to get external IP
@@ -61,8 +61,8 @@ pipeline {
                             
                             # Get and print the application URL
                             echo '🚀 Application URL:'
-                            kubectl get service flask-app-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' | awk '{print "http://"$1":5053"}'
-                        """                              
+                            kubectl get service flask-app-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' | awk '{print "http://"\\$1":5053"}'
+                        """                                
                     }
                 }
             }
