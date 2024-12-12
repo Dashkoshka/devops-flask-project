@@ -19,6 +19,6 @@ spec:
           image: ${DOCKER_IMAGE}
           ports:
             - containerPort: 5053
-          envForm:
-          configMapRef:
-            name: flask-app-config
+          envFrom:
+            - configMapRef:
+                name: flask-app-config
