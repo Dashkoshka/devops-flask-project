@@ -73,13 +73,13 @@ module "eks" {
 
   eks_managed_node_groups = {
     general = {
-      desired_size    = 1
-      min_size        = 1
-      max_size        = 1
-      instance_types  = ["t3.micro"]
-      capacity_type   = "SPOT"
-      disk_size       = 20
-    }
+        desired_size    = 1
+        min_size       = 1
+        max_size       = 1
+        instance_types = ["t3.small"]    # Changed from t3.micro - change to t3.small for the pod limit. t3.small allows up to 11 pods while t3.micro up to 4 pods. (System pods (4 pods) + user pods (7 pods - flask-app + 6 more for potential future needs) = 11 pods)
+        capacity_type  = "SPOT"          # Keep SPOT for cost savings
+        disk_size     = 20
+      }
   }
 
   cluster_addons = {
