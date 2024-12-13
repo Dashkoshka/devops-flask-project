@@ -2,6 +2,10 @@
 
 A Pokemon-themed DevOps task management application deployed using AWS, Jenkins, and Kubernetes. This project combines a fun, interactive todo list with modern DevOps practices and infrastructure management.
 
+## First of all, turn on your speakers and click on the following link. Please leave YouTube running in the background :)
+
+https://youtu.be/FmrGz8qSyrk?si=SWV54F0uejPkIgz8
+
 ## 🌟 Features
 
 - Pokemon-themed user interface
@@ -42,15 +46,18 @@ cd devops-flask-project
 ### 2. Infrastructure Management
 
 Navigate to the scripts directory:
+
 ```bash
 cd cloud-infra/scripts
 ```
 
 Available management scripts:
+
 - `startup-all.sh`: Provisions and starts all infrastructure
 - `shutdown-all.sh`: Terminates all infrastructure
 
 To run a script:
+
 ```bash
 ./startup-all.sh
 # or
@@ -80,6 +87,7 @@ After running `startup-all.sh`:
 ## 🌐 Accessing the Application
 
 After successful deployment, access the application at the URL provided by the Jenkins pipeline. The application will be available at:
+
 ```
 http://<load-balancer-url>:5053
 ```
@@ -87,6 +95,7 @@ http://<load-balancer-url>:5053
 ## 🏗️ Infrastructure Details
 
 The project sets up:
+
 - Jenkins server on EC2
 - EKS cluster for Kubernetes deployment
 - ECR repository for Docker images
@@ -113,6 +122,7 @@ devops-flask-project/
 ## 🔄 CI/CD Pipeline
 
 The Jenkins pipeline:
+
 1. Builds the Flask application
 2. Creates a Docker image
 3. Pushes to ECR
@@ -122,6 +132,7 @@ The Jenkins pipeline:
 ## 🧹 Cleanup
 
 To tear down all infrastructure:
+
 ```bash
 cd cloud-infra/scripts
 ./shutdown-all.sh
