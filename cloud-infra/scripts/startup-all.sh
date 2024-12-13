@@ -6,12 +6,23 @@ echo "Starting all AWS resources..."
 echo "Setting up Jenkins infrastructure..."
 cd ../jenkins-terraform
 
-terraform import aws_iam_role.jenkins_role jenkins-role
-terraform import aws_iam_instance_profile.jenkins_profile jenkins-profile
+# Check and delete existing instance profile if it exists
+echo "Checking for existing instance profile..."
+if aws iam get-instance-profile --instance-profile-name jenkins-profile >/dev/null 2>&1; then
+    echo "Deleting existing instance profile..."
+    # Remove roles from instance profile first
+    aws iam remove-role-from-instance-profile --instance-profile-name jenkins-profile --role-name jenkins-role || true
+    # Wait a bit for removal to propagate
+    sleep 10
+    # Delete the instance profile
+    aws iam delete-instance-profile --instance-profile-name jenkins-profile || true
+    # Wait for deletion to complete
+    sleep 10
+fi
 
 # Apply terraform configurations
-terraform init
-terraform apply -auto-approve
+terraform init                  # Fresh initialization with latest providersg
+terraform apply -auto-approve   # Apply the configuration
 
 # Get Jenkins instance public IP
 JENKINS_IP=$(terraform output -raw jenkins_public_ip)
@@ -27,8 +38,10 @@ sleep 10
 # 3. Setup EKS env (if needed)
 echo "Setting up EKS infrastructure..."
 cd ./eks-terraform
-terraform init
-terraform apply -auto-approve
+
+# Apply terraform configurations
+terraform init                  # Fresh initialization with latest providers
+terraform apply -auto-approve   # Apply the configuration
 cd ..
 
 echo "Waiting for EKS cluster to be fully operational..."
