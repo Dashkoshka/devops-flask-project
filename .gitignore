@@ -11,3 +11,6 @@ keys
 *lock.hcl
 cloud-infra/jenkins-terraform/.terraform.lock.hcl
 cloud-infra/jenkins-terraform/terraform.tfstate
+cloud-infra/eks-terraform/.terraform.lock.hcl
+cloud-infra/jenkins-terraform/.terraform.lock.hcl
+cloud-infra/jenkins-terraform/terraform.tfstate
